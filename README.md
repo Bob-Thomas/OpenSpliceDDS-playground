@@ -6,6 +6,10 @@ This repository has only been tested on Linux with the Elementary OS distro and 
 
 Once again this repository is purely for research and education and also a bit of fun.
 
+We of course make heavy use of the OpenSplice library so that also includes that the license they are using needs to referenced here
+
+https://github.com/ADLINK-IST/opensplice/blob/master/LICENSE
+
 ## Requirements
 
 First up you will need to have a release of OpenSplice installed and their requirements.
@@ -53,5 +57,7 @@ To create the actual executable you run `make` and it will create 2 executables 
 
 Run `./subscriber` in one terminal and `./publisher` in another.
 If you type something in the publisher terminal it should show you the data in the subscriber channel.
+
+![](assets/cool.gif)
 
 ### Et voila you have a running helloWorld example of OpenSplice DDS
