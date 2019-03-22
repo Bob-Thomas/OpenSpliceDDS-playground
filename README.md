@@ -11,6 +11,11 @@ We of course make heavy use of the OpenSplice library so that also includes that
 https://github.com/ADLINK-IST/opensplice/blob/master/LICENSE
 
 ## Requirements
+### TL;DR"
+1. `Vortex OpenSplice HDE Release 6.9.190227OSS`
+2. `Cmake >= 3.11`
+3. `compiler that allows c++17 (tested on g++ 7.4)`
+
 
 First up you will need to have a release of OpenSplice installed and their requirements.
 This repository uses this version of OpenSplice.
