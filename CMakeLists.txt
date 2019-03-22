@@ -1,9 +1,14 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.11)
 project (dds-hello-world)
+include(FetchContent)
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
+
 
 include (MacroOpenSplice)
 include (osmacros)
+include (gitModules)
 
 find_package (OpenSplice REQUIRED)
 
@@ -32,6 +37,7 @@ foreach(idl ${idls})
 endforeach(idl)
 
 set (PUB_SOURCES
+ ${joystick_SOURCE_DIR}/joystick.cc
  ${sourceFolder}/publisher.cpp
 )
 set (SUB_SOURCES
