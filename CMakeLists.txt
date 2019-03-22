@@ -4,18 +4,19 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 include (MacroOpenSplice)
 include (osmacros)
+
 find_package (OpenSplice REQUIRED)
 
-message(  ${PROJECT_SOURCE_DIR})
 include_directories(
   ${PROJECT_SOURCE_DIR}
   ${OpenSplice_INCLUDE_DIRS}
 )
-# include()
 
 set (sourceFolder ${CMAKE_SOURCE_DIR}/src)
 set (idlFolder ${sourceFolder}/models)
 set (idls HelloWorldData.idl)
+
+# Find all IDL files in src/models and generate the cpp structures for it
 foreach(idl ${idls})
 	OpenSplice_IDLGEN (${idlFolder}/${idl})
 	string (REGEX REPLACE "\(.*\).idl" "./gen/\\1.cpp" VARS_1 ${idl})
@@ -31,16 +32,16 @@ foreach(idl ${idls})
 endforeach(idl)
 
 set (PUB_SOURCES
- src/publisher.cpp
+ ${sourceFolder}/publisher.cpp
 )
 set (SUB_SOURCES
- src/subscriber.cpp
+ ${sourceFolder}/subscriber.cpp
 )
 
 set (PUB_EXE publisher)
 set (SUB_EXE subscriber)
 set (DATAMODEL datamodel)
-MESSAGE(${OpenSplice_LIBRARIES})
+
 add_executable (${PUB_EXE} ${PUB_SOURCES})
 add_executable (${SUB_EXE} ${SUB_SOURCES})
 add_library (${DATAMODEL} SHARED ${OpenSplice_DATAMODEL})
