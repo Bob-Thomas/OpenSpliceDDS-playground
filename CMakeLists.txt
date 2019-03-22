@@ -50,6 +50,10 @@ set (DATAMODEL datamodel)
 
 add_executable (${PUB_EXE} ${PUB_SOURCES})
 add_executable (${SUB_EXE} ${SUB_SOURCES})
+
+set_property(TARGET ${PUB_EXE} PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${SUB_EXE} PROPERTY CXX_STANDARD 17)
+
 add_library (${DATAMODEL} SHARED ${OpenSplice_DATAMODEL})
 
 add_definitions (
@@ -60,6 +64,7 @@ add_definitions (
 target_link_libraries (
   ${DATAMODEL} 
   ${OpenSplice_LIBRARIES}
+  stdc++fs
 )
 
 target_link_libraries (${PUB_EXE}
