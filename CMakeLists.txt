@@ -19,7 +19,7 @@ include_directories(
 
 set (sourceFolder ${CMAKE_SOURCE_DIR}/src)
 set (idlFolder ${sourceFolder}/models)
-set (idls HelloWorldData.idl)
+set (idls JoystickData.idl)
 
 # Find all IDL files in src/models and generate the cpp structures for it
 foreach(idl ${idls})
@@ -70,9 +70,12 @@ target_link_libraries (
 target_link_libraries (${PUB_EXE}
  ${OpenSplice_LIBRARIES}
  ${DATAMODEL} 
+ ${CPR_LIBRARIES}
+
 )
 
 target_link_libraries (${SUB_EXE}
  ${OpenSplice_LIBRARIES}
  ${DATAMODEL}
+ ${CPR_LIBRARIES}
 )
