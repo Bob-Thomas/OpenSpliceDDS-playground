@@ -1,20 +1,20 @@
 cmake_minimum_required (VERSION 3.11)
-project (dds-hello-world)
-include(FetchContent)
-
+project (dds-hello-world LANGUAGES CXX)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-
-
 
 include (MacroOpenSplice)
 include (osmacros)
 include (gitModules)
+include (gSoapInstaller) # Install and build gsoap
+include (onvifGenerator) # Generate onvif proxy files using gsoap
 
 find_package (OpenSplice REQUIRED)
 
 include_directories(
   ${PROJECT_SOURCE_DIR}
   ${OpenSplice_INCLUDE_DIRS}
+  ${GSOAP_INCLUDE_DIRS}
+  ${ONVIF_GENERATION_DIR}
 )
 
 set (sourceFolder ${CMAKE_SOURCE_DIR}/src)
@@ -36,12 +36,15 @@ foreach(idl ${idls})
 	set(OpenSplice_DATAMODEL ${OpenSplice_DATAMODEL} ${VARS_1} ${VARS_2} ${VARS_3} ${VARS_4} ${VARS_5} ${VARS_6} ${VARS_7} ${VARS_8} ${VARS_9})
 endforeach(idl)
 
+
 set (PUB_SOURCES
  ${joystick_SOURCE_DIR}/joystick.cc
  ${sourceFolder}/publisher.cpp
 )
 set (SUB_SOURCES
  ${sourceFolder}/subscriber.cpp
+ ${GSOAP_PLUGIN_SOURCES}
+ ${ONVIF_GENERATED_OUTPUT}
 )
 
 set (PUB_EXE publisher)
@@ -50,6 +53,13 @@ set (DATAMODEL datamodel)
 
 add_executable (${PUB_EXE} ${PUB_SOURCES})
 add_executable (${SUB_EXE} ${SUB_SOURCES})
+
+add_dependencies(ONVIF_GENERATION_TARGET gSOAP)
+add_dependencies(${SUB_EXE} ONVIF_GENERATION_TARGET)
+
+
+target_compile_options(${SUB_EXE} PRIVATE -fPIC -fno-use-cxa-atexit -fexceptions)
+target_compile_definitions(${SUB_EXE}  PRIVATE -DWITH_DOM -DWITH_OPENSSL)
 
 set_property(TARGET ${PUB_EXE} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${SUB_EXE} PROPERTY CXX_STANDARD 17)
@@ -70,12 +80,11 @@ target_link_libraries (
 target_link_libraries (${PUB_EXE}
  ${OpenSplice_LIBRARIES}
  ${DATAMODEL} 
- ${CPR_LIBRARIES}
-
 )
 
 target_link_libraries (${SUB_EXE}
  ${OpenSplice_LIBRARIES}
  ${DATAMODEL}
- ${CPR_LIBRARIES}
+ ssl
+ crypto
 )
