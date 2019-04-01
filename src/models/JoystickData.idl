@@ -3,9 +3,9 @@ module JoystickData
    struct Movement
    {
       /** direction */
-      short tiltSpeed;
-      short panSpeed;
-      short zoomSpeed;
+      float tiltSpeed;
+      float panSpeed;
+      float zoomSpeed;
       
    };
    #pragma keylist Movement
